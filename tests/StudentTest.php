@@ -18,6 +18,7 @@
         {
             Student::deleteAll();
             Course::deleteAll();
+
         }
 
         function test_setStudentName()
@@ -158,5 +159,59 @@
 
             $this->assertEquals(array($new_course,$new_course2), $result);
         }
+
+        function testGetCourses()
+        {
+            //Arrange
+            $name = "Tom";
+            $id = 5;
+            $major = "math";
+            $test_student = new Student($name, $major, $id);
+            $test_student->save();
+
+            $course_name = "Math";
+            $id = 2;
+            $test_course = new Course($course_name, $id);
+            $test_course->save();
+
+            $course_name2 = "Science";
+            $id2 = 3;
+            $test_course2 = new Course($course_name2, $id2);
+            $test_course2->save();
+
+            //Act
+            $test_student->addCourse($test_course);
+            $test_student->addCourse($test_course2);
+
+            //Assert
+            // var_dump("This is whats whats actually happening");
+            // var_dump($test_student->getCourses());
+            // var_dump("This is expected");
+            // var_dump([$test_course, $test_course2]);
+            $this->assertEquals([$test_course, $test_course2], $test_student->getCourses());
+        }
+
+                function testDelete()
+        {
+            //Arrange
+            $student_name = "George";
+            $id = 1;
+            $major = "Math";
+            $test_student = new Student($student_name, $major, $id);
+            $test_student->save();
+
+            $course_name = "History";
+            $id = 2;
+            $test_course = new Course($course_name, $id);
+            $test_course->save();
+
+            //Act
+            $test_student->addCourse($test_course);
+            $test_student->delete();
+
+            //Assert
+            $this->assertEquals([], $test_course->getStudents());
+        }
+
     }
 ?>

@@ -84,7 +84,45 @@
         function delete()
         {
             $GLOBALS['DB']->exec("DELETE FROM students WHERE id = {$this->getId()};");
-            $GLOBALS['DB']->exec("DELETE FROM courses WHERE course_id = {$this->getId()};");
+            $GLOBALS['DB']->exec("DELETE FROM students_courses WHERE student_id = {$this->getId()};");
         }
+
+        function getCourses()
+        {
+            $query = $GLOBALS['DB']->query("SELECT course_id FROM students_courses WHERE student_id = {$this->getId()};");
+            var_dump("query");
+            var_dump($query);
+            $course_ids = $query->fetchAll();
+            var_dump("course_ids");
+            var_dump($course_ids);
+
+            $courses = array();
+            foreach($course_ids as $id) {
+                $course_id = $id['course_id'];
+                $result = $GLOBALS['DB']->query("SELECT * FROM courses WHERE id = {$course_id};");
+                $returned_course = $result->fetchAll();
+
+                $course_name = $returned_course[0]['course_name'];
+                $id = $returned_course[0]['id'];
+                $new_course = new Course($course_name, $id);
+                array_push($courses, $new_course);
+            }
+            return $courses;
+        }
+        //for join table--inserts data
+        function addCourse($course)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO students_courses (student_id, course_id) VALUES ({$this->getId()}, {$course->getId()});");
+        }
+
+
+        // function search($student_id)
+        // {
+        //     $test = $GLOBALS['DB']->query(" SELECT student_name.* FROM
+        //     students JOIN students ON (student.id = students.course_id)
+        //              JOIN courses ON (students_courses.student_id = student.id)
+        //     WHERE course.id = 1;");
+        //     return $test;
+        // }
     }
 ?>

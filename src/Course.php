@@ -27,7 +27,7 @@
 
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO courses (course_name) VALUES ('{$this->getCourseName()}')");
+            $GLOBALS['DB']->exec("INSERT INTO courses (course_name) VALUES ('{$this->getCourseName()}');");
             $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
@@ -71,6 +71,32 @@
         function deletecourse()
         {
             $GLOBALS['DB']->exec("DELETE FROM courses WHERE id = {$this->getId()}");
+            $GLOBALS['DB']->exec("DELETE FROM students_courses WHERE course_id = {$this->getId()};");
+        }
+
+        function addStudent($student)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO students_courses (student_id, course_id) VALUES ({$student->getId()}, {$this->getId()});");
+        }
+
+        function getStudents()
+        {
+            $query = $GLOBALS['DB']->query("SELECT student_id FROM students_courses WHERE course_id = {$this->getId()};");
+            $student_ids = $query->fetchAll();
+
+            $students = array();
+            foreach($student_ids as $id) {
+                $student_id = $id['student_id'];
+                $result = $GLOBALS['DB']->query("SELECT * FROM students WHERE id = {$student_id};");
+                $returned_student = $result->fetchAll();
+
+                $student_name = $returned_student[0]['student_name'];
+                $major = $returned_student[0]['major'];
+                $id = $returned_student[0]['id'];
+                $new_student = new Student($student_name, $major, $id);
+                array_push($students, $new_student);
+            }
+            return $students;
         }
     }
 ?>
