@@ -90,11 +90,8 @@
         function getCourses()
         {
             $query = $GLOBALS['DB']->query("SELECT course_id FROM students_courses WHERE student_id = {$this->getId()};");
-            var_dump("query");
-            var_dump($query);
             $course_ids = $query->fetchAll();
-            var_dump("course_ids");
-            var_dump($course_ids);
+
 
             $courses = array();
             foreach($course_ids as $id) {
