@@ -1,0 +1,24 @@
+{% extends "index.html.twig" %}
+
+{% block body%}
+
+    <form action="/student-list/{{course.getId}}" method="post">
+        <label for="student-name">Enter Student Name: </label>
+        <input type="text" name="student-name">
+
+        <label for="major">Enter Student Major:</label>
+        <input type="text" name="major">
+        <button type="submit">Add Student</button>
+    </form>
+
+    {% if students is not empty%}
+
+    {% for student in students %}
+    <li>{{student.getStudentName}}</li>
+    <li>{{student.getMajor}}</li>
+    {% endfor %}
+    {% endif %}
+
+
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "index.html.twig" %}
+
+{% block body%}
+
+{% for course in courses %}
+<a href="/add-students/{{course.getId}}"><li>{{course.getCourseName}}</li></a>
+    <ul>
+
+    </ul>
+{% endfor %}
+<a href="/delete"><button>delete all</button></a>
+<a href="/"><button>enter another course</button></a>
+{% endblock %}
