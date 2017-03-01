@@ -48,13 +48,7 @@ date_default_timezone_set('America/Los_Angeles');
 
     $app->get("/add-students/{id}", function($id) use ($app) {
         $course = Course::find($id);
-        return $app['twig']->render("show-students.html.twig", array('course' => $course, 'courses' => Course::getAll(), 'students'=> Student::getAll()));
-    });
-
-    $app->post("/student-list/{id}", function($id) use ($app) {
-        $course = Course::find($id);
-        $new_student = new Student($_POST['student-name'], $_POST['major'], null);
-        $new_student->save();
+        // $student = Student::find($_POST['student_id']);
         return $app['twig']->render("show-students.html.twig", array('course' => $course, 'courses' => Course::getAll(), 'students'=> Student::getAll()));
     });
 

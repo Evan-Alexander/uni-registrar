@@ -2,20 +2,21 @@
 
 {% block body%}
 
-    <form action="/student-list/{{course.getId}}" method="post">
-        <label for="student-name">Enter Student Name: </label>
-        <input type="text" name="student-name">
-
+    <form action="/student-list" method="post">
+        <label for="student_name">Name</label>
+        <input type="text" name="student_name">
         <label for="major">Enter Student Major:</label>
         <input type="text" name="major">
         <button type="submit">Add Student</button>
     </form>
 
     {% if students is not empty%}
-
+    <h1>Students in {{course.getCourseName}}</h1>
     {% for student in students %}
-    <li>{{student.getStudentName}}</li>
-    <li>{{student.getMajor}}</li>
+    <ul>Student:
+        <a href="/course-list/{{student.getId}}"<li>Name:{{student.getStudentName}}</li></a>
+        <li>Major: {{student.getMajor}}</li>
+    </ul>
     {% endfor %}
     {% endif %}
 
